@@ -41,6 +41,7 @@ class Reversi:
             return -1
 
         action_space = self.update_action_space(grid)
+        action_space = [*set(action_space)]
         self.grid = grid
         self.action_space = action_space
         # return next_state, reward, done
