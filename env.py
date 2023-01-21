@@ -1,5 +1,5 @@
 import numpy as np
-import pygame
+
 
 
 class Reversi:
