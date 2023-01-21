@@ -20,7 +20,7 @@ class Reversi:
         self.action_space = [(middle - 2, middle), (middle - 1, middle + 1), (middle, middle - 2),
                              (middle + 1, middle - 1)]
 
-        # White starts first
+        # Black starts first
         self.white_move = False
 
     # update the grid and action space after the player make an action
@@ -38,12 +38,41 @@ class Reversi:
                 self.white_move = True
         else:
             print("Invalid action!")
-            return
+            return -1
+
+        check_win = self.check_if_win(grid);
         action_space = self.update_action_space(grid)
         self.grid = grid
         self.action_space = action_space
-        print(self.action_space)
         # return next_state, reward, done
+
+    # Checks whether the entire grid is filled, and returns the winner
+    # Returns 0 if grid is not filled yet
+    # Returns 1 if white wins
+    # Returns 2 if black wins
+    # Returns 3 if tie
+    def check_if_win(self, grid):
+        white_count = 0
+        black_count = 0
+        for x in range(self.size):
+            for y in range(self.size):
+                if grid[x][y] == 0:
+                    return 0
+                elif grid[x][y] == 1:
+                    white_count += 1
+                elif grid[x][y] == 2:
+                    black_count += 1
+        if white_count >= black_count:
+            diff = white_count - black_count
+            print(f"Congratulations to White for winning with {diff} more pieces than Black!")
+            return 1
+        elif black_count >= white_count:
+            diff = black_count - white_count
+            print(f"Congratulations to Black for winning with {diff} more pieces than White!")
+            return 2
+        else:
+            print(f"Tie! Both players ended up with {black_count} pieces on the board.")
+            return 3
 
     # Update the grid after a player makes a move. Converts any piece in between to the opposite color
     def update_grid(self, grid, action):
