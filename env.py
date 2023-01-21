@@ -40,11 +40,11 @@ class Reversi:
             print("Invalid action!")
             return -1
 
-        check_win = self.check_if_win(grid);
         action_space = self.update_action_space(grid)
         self.grid = grid
         self.action_space = action_space
         # return next_state, reward, done
+        return self.check_if_win(grid);
 
     # Checks whether the entire grid is filled, and returns the winner
     # Returns 0 if grid is not filled yet
@@ -149,11 +149,13 @@ class Reversi:
                 ret = self._continued_check(grid, action, dir, current_color)
                 if (ret == 1):
                     gridx = x + 1
-                    while gridx < self.size:
-                        if grid[gridx][y] == current_color:
+                    gridy = y + 1
+                    while gridx < self.size and gridy < self.size:
+                        if grid[gridx][gridy] == current_color:
                             break
-                        grid[gridx][y] = current_color
+                        grid[gridx][gridy] = current_color
                         gridx += 1
+                        gridy += 1
         return grid
 
     # Helper method for update_grid(). Continue checking in each specified direction.
@@ -254,76 +256,76 @@ class Reversi:
         if dir == 0:  # Check right
             gridy = y + 1
             while gridy < self.size:
-                if grid[x][gridy] == 0 and gridy != y + 1:
+                if grid[x][gridy] == Reversi.EMPTY and gridy != y + 1:
                     action_space.append((x, gridy))
                     break
-                elif grid[x][gridy] == 0 and gridy == y + 1:
+                elif grid[x][gridy] == Reversi.EMPTY and gridy == y + 1:
                     break
                 gridy += 1
         if dir == 1:  # Check top right
             gridx, gridy = x - 1, y + 1
-            while gridx > 0 and gridy < self.size:
-                if grid[gridx][gridy] == 0 and gridy != y + 1 and gridx != x - 1:
+            while gridx >= 0 and gridy < self.size:
+                if grid[gridx][gridy] == Reversi.EMPTY and gridy != y + 1 and gridx != x - 1:
                     action_space.append((gridx, gridy))
                     break
-                elif grid[gridx][gridy] == 0 and gridy == y + 1 and gridx == x - 1:
+                elif grid[gridx][gridy] == Reversi.EMPTY and gridy == y + 1 and gridx == x - 1:
                     break
                 gridy += 1
                 gridx -= 1
         if dir == 2:  # Check upward
             gridx = x - 1
-            while gridx > 0:
-                if grid[gridx][y] == 0 and gridx != x - 1:
+            while gridx >= 0:
+                if grid[gridx][y] == Reversi.EMPTY and gridx != x - 1:
                     action_space.append((gridx, y))
                     break
-                elif grid[gridx][y] == 0 and gridx == x - 1:
+                elif grid[gridx][y] == Reversi.EMPTY and gridx == x - 1:
                     break
                 gridx -= 1
         if dir == 3:  # Check top left
             gridx, gridy = x - 1, y - 1
-            while gridx > 0 and gridy > 0:
-                if grid[gridx][gridy] == 0 and gridx != x - 1 and gridy != y - 1:
+            while gridx >= 0 and gridy > 0:
+                if grid[gridx][gridy] == Reversi.EMPTY and gridx != x - 1 and gridy != y - 1:
                     action_space.append((gridx, gridy))
                     break
-                elif grid[gridx][gridy] == 0 and gridx == x - 1 and gridy == y - 1:
+                elif grid[gridx][gridy] == Reversi.EMPTY and gridx == x - 1 and gridy == y - 1:
                     break
                 gridx -= 1
                 gridy -= 1
         if dir == 4:  # Check left
             gridy = y - 1
-            while gridy > 0:
-                if grid[x][gridy] == 0 and gridy != y - 1:
+            while gridy >= 0:
+                if grid[x][gridy] == Reversi.EMPTY and gridy != y - 1:
                     action_space.append((x, gridy))
                     break
-                elif grid[x][gridy] == 0 and gridy == y - 1:
+                elif grid[x][gridy] == Reversi.EMPTY and gridy == y - 1:
                     break
                 gridy -= 1
         if dir == 5:  # Check bottom left
             gridx, gridy = x + 1, y - 1
-            while gridx < self.size and gridy > 0:
-                if grid[gridx][gridy] == 0 and gridx != x + 1 and gridy != y - 1:
+            while gridx < self.size and gridy >= 0:
+                if grid[gridx][gridy] == Reversi.EMPTY and gridx != x + 1 and gridy != y - 1:
                     action_space.append((gridx, gridy))
                     break
-                elif grid[gridx][gridy] == 0 and gridx == x + 1 and gridy == y - 1:
+                elif grid[gridx][gridy] == Reversi.EMPTY and gridx == x + 1 and gridy == y - 1:
                     break
                 gridx += 1
                 gridy -= 1
         if dir == 6:  # Check downward
             gridx = x + 1
             while gridx < self.size:
-                if grid[gridx][y] == 0 and gridx != x + 1:
+                if grid[gridx][y] == Reversi.EMPTY and gridx != x + 1:
                     action_space.append((gridx, y))
                     break
-                elif grid[gridx][y] == 0 and gridx == x + 1:
+                elif grid[gridx][y] == Reversi.EMPTY and gridx == x + 1:
                     break
                 gridx += 1
         if dir == 7:  # Check bottom right
             gridx, gridy = x + 1, y + 1
             while gridx < self.size and gridy < self.size:
-                if grid[gridx][gridy] == 0 and gridx != x + 1 and gridy != y + 1:
+                if grid[gridx][gridy] == Reversi.EMPTY and gridx != x + 1 and gridy != y + 1:
                     action_space.append((gridx, gridy))
                     break
-                elif grid[gridx][gridy] == 0 and gridx == x + 1 and gridy == y + 1:
+                elif grid[gridx][gridy] == Reversi.EMPTY and gridx == x + 1 and gridy == y + 1:
                     break
                 gridx += 1
                 gridy += 1
@@ -334,7 +336,8 @@ class Reversi:
     def rendor(self):
         for row in self.grid:
             print(row)
-        print("")
+        print("1: White piece")
+        print("2: Black piece")
 
 
 if __name__ == "__main__":
