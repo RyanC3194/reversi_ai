@@ -37,7 +37,6 @@ class Reversi:
                 grid = self.update_grid(grid, action)
                 self.white_move = True
         else:
-            print("Invalid action!")
             return -1
 
         action_space = self.update_action_space(grid)
