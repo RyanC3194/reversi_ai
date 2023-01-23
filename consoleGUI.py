@@ -33,23 +33,22 @@ if __name__ == "__main__":
                     while True:
                         try:
                             check_exit = input()
-                            if check_exit == "Exit" or 'exit':
+                            if check_exit == "Exit" or check_exit == "exit":
                                 break
                             choice = tuple(check_exit.split(','))
                             coordinate = (int(choice[0].replace('(', '')), int(choice[1].replace(')', '')))
+
                             if coordinate not in board.action_space:
                                 raise ValueError
                             break
                         except ValueError:
                             print("Please enter a valid coordinate!")
-                    if check_exit == 'Exit' or 'exit':
-                        break
-
                     win = board.step(coordinate)
                     if win != 0:
                         end = True
             elif choice == 2:
-                sys.exit()
+                print("Bye!")
+                sys.exit()q
             else:
                 raise ValueError
             print("What would you like to do?")
